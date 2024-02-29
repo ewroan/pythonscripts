@@ -1,5 +1,6 @@
 import sys
 import requests
+import json
 
 def check_username(username):
     url = 'https://www.instagram.com/api/v1/web/accounts/web_create_ajax/attempt/'
@@ -31,23 +32,29 @@ def check_username(username):
         'x-instagram-ajax': '1011741444',
         'x-requested-with': 'XMLHttpRequest'
     }
+
     data = {
-        'enc_password': '#PWD_INSTAGRAM_BROWSER%3A10%3A1709224787%3AAVRQACYLBMvTCSBF41HgxW6XunSqpohQ8vqcm021v6s0ok1Xe5VfAU518Y0WoGsGjqUANsaQC1MgBdRPeCViDraK2gdI3z8H4pfR4CRjhWqUi%2Bz3n%2BNyD6gTUI5Zu1fIaa9GpqGdsuuKz586bg%3D%3D',
-        'email': 'deneme@deneme.com',
-        'first_name': 'denemeci',
-        'opt_into_one_tap': 'false',
-        'username': username
+        'enc_password': '#PWD_INSTAGRAM_BROWSER:10:1709226660:AVRQADdBH2oBueJyfjjShzG381RzvQSZYZlgLzJ8FGnp+5c/xPqaDL1mhQgI5cC1Rv/k82EN2/xIwnVYJhyIWaPaBc2B/XOLxw1aYJD1171bFDK6S9GYoheQmJa/J3u2RC6BrxvpSzAzTVMFk1Q=',
+        'email': 'u@namecheckpythonforexample.com',
+        'first_name': 'namecheckpythonforexample',
+        'username': username,
+        'opt_into_one_tap': 'false'
     }
 
     response = requests.post(url, headers=headers, data=data)
     response_json = response.json()
 
-    if response_json["dryrun_passed"] == True:
-        print(f"The username '{username}' is available.")
+    #json_formatted_str = json.dumps(response_json, indent=2)
+    #print(json_formatted_str)
+    #print(response_json["dryrun_passed"])
+
+    if response_json.get('dryrun_passed', True):
+        print(f"The username '{username}' is AVAILABLE")
     else:
-        print(f"The username '{username}' is not available.")
+        print(f"The username '{username}' is NOT available")
 
 if __name__ == "__main__":
+    import sys
     if len(sys.argv) != 2:
         print("Usage: python script.py <username>")
         sys.exit(1)
